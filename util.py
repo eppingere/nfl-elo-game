@@ -1,4 +1,5 @@
 import csv
+
 try:
     from urllib.request import urlretrieve
 except ImportError:
@@ -12,9 +13,9 @@ class Util:
         games = [item for item in csv.DictReader(open(file))]
 
         # Uncommenting these three lines will grab the latest game results for 2017, update team ratings accordingly, and make forecasts for upcoming games
-        #file_2017 = file.replace(".", "_2017.")
-        #urlretrieve("https://projects.fivethirtyeight.com/nfl-api/2017/nfl_games_2017.csv", file_2017)
-        #games += [item for item in csv.DictReader(open(file_2017))]
+        file_2017 = file.replace(".", "_2017.")
+        urlretrieve("https://projects.fivethirtyeight.com/nfl-api/2017/nfl_games_2017.csv", file_2017)
+        games += [item for item in csv.DictReader(open(file_2017))]
 
         for game in games:
             game['season'], game['neutral'], game['playoff'] = int(game['season']), int(game['neutral']), int(game['playoff'])
@@ -39,8 +40,8 @@ class Util:
                 continue
 
             # Don't count the 2017 NE/KC game because it wasn't included in our game
-            if game['date'] == '2017-09-07':
-              continue
+            # if game['date'] == '2017-09-07':
+            #   continue
 
             if game['season'] not in elo_points_by_season:
                 elo_points_by_season[game['season']] = 0.0
@@ -65,17 +66,19 @@ class Util:
             my_points_by_season[game['season']] += my_points
 
         # Print individual seasons
-        for season in my_points_by_season:
-            print("In %s, your forecasts would have gotten %s points. Elo got %s points." % (season, round(my_points_by_season[season], 2), round(elo_points_by_season[season], 2)))
+        # for season in my_points_by_season:
+        #     print("In %s, your forecasts would have gotten %s points. Elo got %s points." % (season, round(my_points_by_season[season], 2), round(elo_points_by_season[season], 2)))
 
         # Show overall performance
         my_avg = sum(my_points_by_season.values())/len(my_points_by_season.values())
         elo_avg = sum(elo_points_by_season.values())/len(elo_points_by_season.values())
-        print("\nOn average, your forecasts would have gotten %s points per season. Elo got %s points per season.\n" % (round(my_avg, 2), round(elo_avg, 2)))
+        # print("\nCurrent Configuration: %s\nTheir Configuration: %s\n" % (round(my_avg, 2), round(elo_avg, 2)))
 
         # Print forecasts for upcoming games
-        if len(upcoming_games) > 0:
-            print("Forecasts for upcoming games:")
-            for game in upcoming_games:
-                print("%s\t%s vs. %s\t\t%s%% (Elo)\t\t%s%% (You)" % (game['date'], game['team1'], game['team2'], int(round(100*game['elo_prob1'])), int(round(100*game['my_prob1']))))
-            print("")
+        # if len(upcoming_games) > 0:
+        #     print("Forecasts for upcoming games:")
+        #     for game in upcoming_games:
+        #         print("%s\t%s vs. %s\t\t%s%% (Elo)\t\t%s%% (You)" % (game['date'], game['team1'], game['team2'], int(round(100*game['elo_prob1'])), int(round(100*game['my_prob1']))))
+        #     print("")
+
+        return my_avg - elo_avg
