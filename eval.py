@@ -1,6 +1,8 @@
 import pickle
 import time
 
+import tensorflow as tf
+
 from forecast import *
 from util import *
 
@@ -31,8 +33,7 @@ for hfa_i in range(600, 700):
             if res > best_res:
                 best_res = res
                 best_config = (hfa, k, revert)
-
-            results[(hfa, k, revert)] = res
+                results[(hfa, k, revert)] = res
 
             temp_time = time.time() - before
 
