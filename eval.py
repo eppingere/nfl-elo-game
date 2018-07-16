@@ -1,6 +1,7 @@
 import pickle
 import time
 
+import scipy.optimize as opt
 import tensorflow as tf
 
 from forecast import *
@@ -9,41 +10,26 @@ from util import *
 # Read historical games from CSV
 games = Util.read_games("data/nfl_games.csv")
 
-best_config = (0.0, 0.0, 0.0)
-best_res = -10000.0
-temp_time = 0.0
 
 results = {}
 
-for hfa_i in range(600, 700):
-    hfa = 0.1 * hfa_i
-    for k_i in range(100, 300):
-        k = 0.1 * k_i
-        for revert_i in range(10, 50):
-            revert = 0.01 * revert_i
+def diff_from_config(p):
+    hfa, k, revert = p
+    # Forecast every game
+    Forecast.forecast(games, HFA=hfa, K=k, REVERT=revert)
 
-            before = time.time()
+    # Evaluate our forecasts against Elo
+    res = Util.evaluate_forecasts(games)
 
-            # Forecast every game
-            Forecast.forecast(games, HFA=hfa, K=k, REVERT=revert)
+    results[(hfa, k, revert)] = res
 
-            # Evaluate our forecasts against Elo
-            res = Util.evaluate_forecasts(games)
+    with open("configurations.pickle", "wb") as handle:
+        handle.write("")
+        pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-            if res > best_res:
-                best_res = res
-                best_config = (hfa, k, revert)
-                results[(hfa, k, revert)] = res
+    return -1.0*res
 
-            temp_time = time.time() - before
 
-        print("Current Configuration: ")
-        print("HFA: " + str(hfa))
-        print("K: " + str(k))
-        print("REVERT: " + str(revert))
-        print("Best Difference: " + str(best_res))
-        print("Time: " + str(temp_time))
-        print("")
+solution = opt.minimize(diff_from_config, [Forecast.HFA_default, Forecast.K_default, Forecast.REVERT_default])
 
-with open("configurations.pickle", "wb") as handle:
-    pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
+print(solution)
