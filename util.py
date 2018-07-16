@@ -66,14 +66,22 @@ class Util:
             my_points_by_season[game['season']] += my_points
 
 
+        start_season = 2000
+        num_seasons = 18
+        my_avg, elo_avg = 0, 0
+
         # Print individual seasons
-        for season in range(2000, 2018):
-            print(season)
+        for season in range(start_season, start_season + num_seasons):
+            my_avg += my_points_by_season[season]
+            elo_avg += elo_points_by_season[season]
             print("In %s, your forecasts would have gotten %s points. Elo got %s points." % (season, round(my_points_by_season[season], 2), round(elo_points_by_season[season], 2)))
 
         # Show overall performance
-        my_avg = sum(my_points_by_season.values())/len(my_points_by_season.values())
-        elo_avg = sum(elo_points_by_season.values())/len(elo_points_by_season.values())
+        # my_avg = sum(my_points_by_season.values())/len(my_points_by_season.values())
+        # elo_avg = sum(elo_points_by_season.values())/len(elo_points_by_season.values())
+        my_avg /= num_seasons
+        elo_avg /= num_seasons
+
         print("\nCurrent Configuration: %s\nTheir Configuration: %s\n" % (round(my_avg, 2), round(elo_avg, 2)))
 
         # Print forecasts for upcoming games

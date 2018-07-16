@@ -23,10 +23,6 @@ def diff_from_config(p):
 
     results[(hfa, k, revert)] = res
 
-    with open("configurations.pickle", "wb") as handle:
-        handle.write("")
-        pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
     return -1.0*res
 
 
