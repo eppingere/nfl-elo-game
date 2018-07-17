@@ -8,3 +8,5 @@
 Simply run:
 
     python eval.py
+    
+Fork from [Nate Silver's FiveThirtyEight NFL Predictor](https://github.com/fivethirtyeight/nfl-elo-game)
