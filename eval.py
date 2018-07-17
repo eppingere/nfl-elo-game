@@ -26,8 +26,10 @@ def diff_from_config(p):
     # Evaluate our forecasts against Elo
     return -1.0*Util.evaluate_forecasts(games)
 
+# Run on default parameters
 diff_from_config((Forecast.HFA_default, Forecast.K_default, Forecast.REVERT_default))
 
+# Find optimal inputs
 sys.stdout = open(os.devnull, "w")
 solution = opt.minimize(diff_from_config, [Forecast.HFA_default, Forecast.K_default, Forecast.REVERT_default])
 sys.stdout = sys.__stdout__
