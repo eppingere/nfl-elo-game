@@ -82,7 +82,9 @@ class Util:
         my_avg /= num_seasons
         elo_avg /= num_seasons
 
-        print("\nCurrent Configuration: %s\nTheir Configuration: %s\n" % (round(my_avg, 2), round(elo_avg, 2)))
+        print("\nFrom %s to %s, your forecast scored an average of %s vs Nate Silver's %s\n" % (start_season, start_season + num_seasons - 1, round(my_avg, 2), round(elo_avg, 2)))
+
+        # print("\nCurrent Configuration: %s\nTheir Configuration: %s\n" % (round(my_avg, 2), round(elo_avg, 2)))
 
         # Print forecasts for upcoming games
         # if len(upcoming_games) > 0:

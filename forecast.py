@@ -6,9 +6,9 @@ REVERSIONS = {'CBD1925': 1502.032, 'RAC1926': 1403.384, 'LOU1926': 1307.201, 'CI
 
 class Forecast:
 
-    HFA_default = 61.8     # Home field advantage is worth 65 Elo points
-    K_default = 20.5       # The speed at which Elo ratings change
-    REVERT_default = 0.33  # Between seasons, a team retains 2/3 of its previous season's rating
+    HFA_default = 61.1     # Home field advantage
+    K_default = 20.2       # The speed at which Elo ratings change
+    REVERT_default = 0.39  # Between seasons, a team retains (1.0-REVERT_default) of its previous season's rating
 
     @staticmethod
     def forecast(games, HFA=HFA_default, K=K_default, REVERT=REVERT_default):
